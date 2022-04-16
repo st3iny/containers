@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Configure and start JDownloader.
+
+src=/init/JDownloader.jar
+dest=/opt/jdownloader/JDownloader.jar
+
+if [ ! -f "$dest" ]; then
+    echo Installing JDownloader
+    cp "$src" "$dest"
+fi
+
+set-myjd-credentials
+java -jar "$dest" -norestart
