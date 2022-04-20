@@ -11,4 +11,4 @@ if [ ! -f "$dest" ]; then
 fi
 
 set-myjd-credentials
-java -jar "$dest" -norestart
+exec java -jar "$dest" -norestart
