@@ -1,7 +1,11 @@
 #!/bin/sh
 
-if [ -z "$CACHE_DIR" ] || [ -z "$RCLONE_CONFIG" ] || [ -z "$RCLONE_TARGET" ]; then
-    echo 'Requires CACHE_DIR, RCLONE_CONFIG and RCLONE_TARGET to be set'
+if [ -z "$CACHE_DIR" ] \
+    || [ -z "$RCLONE_CONFIG" ] \
+    || [ -z "$RCLONE_INCLUDE_FROM" ] \
+    || [ -z "$RCLONE_TARGET" ]
+then
+    echo 'Requires CACHE_DIR, RCLONE_CONFIG, RCLONE_INCLUDE_FROM and RCLONE_TARGET to be set'
     exit 1
 fi
 
@@ -18,5 +22,12 @@ rsync \
     --delay-updates \
     rsync://mirror.23m.com/archlinux/ "$CACHE_DIR"/
 
-echo 'Syncing arch repository to s3 ...'
-rclone sync -v --copy-links --config="$RCLONE_CONFIG" "$CACHE_DIR"/ "$RCLONE_TARGET"/
+echo 'Syncing arch repository to s3 bucket ...'
+rclone sync \
+    -v \
+    --config="$RCLONE_CONFIG" \
+    --include-from="$RCLONE_INCLUDE_FROM" \
+    --delete-excluded \
+    --copy-links \
+    "$CACHE_DIR"/ \
+    "$RCLONE_TARGET"/
