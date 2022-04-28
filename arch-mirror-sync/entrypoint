@@ -7,6 +7,9 @@ fi
 
 set -e
 
+echo 'Creating cache dir ...'
+mkdir -p "$CACHE_DIR"
+
 echo 'Syncing arch repository from mirror ...'
 rsync \
     -vrlptH \
