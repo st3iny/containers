@@ -10,11 +10,10 @@ then
 fi
 
 set -e
+set -x
 
-echo 'Creating cache dir ...'
 mkdir -p "$CACHE_DIR"
 
-echo 'Syncing arch repository from mirror ...'
 rsync \
     -vh \
     -rlptH \
@@ -23,7 +22,6 @@ rsync \
     --delay-updates \
     rsync://mirror.23m.com/archlinux/ "$CACHE_DIR"/
 
-echo 'Syncing arch repository to s3 bucket ...'
 rclone sync \
     -v \
     --config="$RCLONE_CONFIG" \
