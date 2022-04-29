@@ -16,7 +16,8 @@ mkdir -p "$CACHE_DIR"
 
 echo 'Syncing arch repository from mirror ...'
 rsync \
-    -vrlptH \
+    -vh \
+    -rlptH \
     --safe-links \
     --delete-delay \
     --delay-updates \
