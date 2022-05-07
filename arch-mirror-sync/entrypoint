@@ -22,11 +22,17 @@ rsync \
     --delay-updates \
     rsync://mirror.23m.com/archlinux/ "$CACHE_DIR"/
 
-rclone sync \
+rclone delete \
+    -v \
+    --config="$RCLONE_CONFIG" \
+    --min-age=91d \
+    --use-server-modtime \
+    "$RCLONE_TARGET"/
+
+rclone copy \
     -v \
     --config="$RCLONE_CONFIG" \
     --include-from="$RCLONE_INCLUDE_FROM" \
-    --delete-excluded \
     --copy-links \
     "$CACHE_DIR"/ \
     "$RCLONE_TARGET"/
