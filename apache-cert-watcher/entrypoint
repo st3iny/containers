@@ -1,0 +1,15 @@
+#!/bin/sh
+
+shutdown () {
+    echo "Exiting"
+    exit
+}
+trap shutdown INT
+
+[ -z "$1" ] && echo 'No directory given' && exit 1
+
+echo "Watching $1"
+while inotifywait -e moved_to "$1" > /dev/null 2>&1; do
+    echo 'Restarting apache'
+    killall -USR1 apache2
+done
