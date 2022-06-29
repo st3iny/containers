@@ -4,10 +4,12 @@
 
 src=/init/JDownloader.jar
 dest=/opt/jdownloader/JDownloader.jar
+flag=/opt/jdownloader/installed.flag
 
-if [ ! -f "$dest" ]; then
+if [ ! -f "$flag" ]; then
     echo Installing JDownloader
     cp "$src" "$dest"
+    touch "$flag"
 fi
 
 set-myjd-credentials
