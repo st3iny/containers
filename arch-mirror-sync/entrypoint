@@ -9,6 +9,13 @@ then
     exit 1
 fi
 
+if [ -n "$PRUNE" ]; then
+    echo 'Pruning remote cache'
+    rclone_cmd=sync
+else
+    rclone_cmd=copy
+fi
+
 set -e
 set -x
 
@@ -22,7 +29,7 @@ rsync \
     --delay-updates \
     rsync://mirror.23m.com/archlinux/ "$CACHE_DIR"/
 
-rclone copy \
+rclone "$rclone_cmd" \
     -v \
     --config="$RCLONE_CONFIG" \
     --include-from="$RCLONE_INCLUDE_FROM" \
