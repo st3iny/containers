@@ -3,9 +3,10 @@
 if [ -z "$CACHE_DIR" ] \
     || [ -z "$RCLONE_CONFIG" ] \
     || [ -z "$RCLONE_INCLUDE_FROM" ] \
-    || [ -z "$RCLONE_TARGET" ]
+    || [ -z "$RCLONE_TARGET" ] \
+    || [ -z "$MIRROR_LIST" ]
 then
-    echo 'Requires CACHE_DIR, RCLONE_CONFIG, RCLONE_INCLUDE_FROM and RCLONE_TARGET to be set'
+    echo 'Requires CACHE_DIR, RCLONE_CONFIG, RCLONE_INCLUDE_FROM, RCLONE_TARGET and MIRROR_LIST to be set'
     exit 1
 fi
 
@@ -15,6 +16,9 @@ if [ -n "$PRUNE" ]; then
 else
     rclone_cmd=copy
 fi
+
+mirror=rsync://"$(shuf -n 1 "$MIRROR_LIST")"
+echo "Syncing from $mirror"
 
 set -e
 set -x
@@ -27,7 +31,12 @@ rsync \
     --safe-links \
     --delete-delay \
     --delay-updates \
-    rsync://mirror.23m.com/archlinux/ "$CACHE_DIR"/
+    --exclude=/iso \
+    --exclude=/archive \
+    --exclude=/other \
+    --exclude=/sources \
+    --delete-excluded \
+    "$mirror" "$CACHE_DIR"/
 
 rclone "$rclone_cmd" \
     -v \
