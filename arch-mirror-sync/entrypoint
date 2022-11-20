@@ -35,6 +35,8 @@ rsync \
     --exclude=/archive \
     --exclude=/other \
     --exclude=/sources \
+    --exclude=/images \
+    --exclude=/*-unstable \
     --delete-excluded \
     "$mirror" "$CACHE_DIR"/
 
