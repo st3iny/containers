@@ -25,20 +25,36 @@ set -x
 
 mkdir -p "$CACHE_DIR"
 
-rsync \
-    -vh \
-    -rlptH \
-    --safe-links \
-    --delete-delay \
-    --delay-updates \
-    --exclude=/iso \
-    --exclude=/archive \
-    --exclude=/other \
-    --exclude=/sources \
-    --exclude=/images \
-    --exclude=/*-unstable \
-    --delete-excluded \
-    "$mirror" "$CACHE_DIR"/
+if [ -n "$PRUNE" ]; then
+    echo 'Pruning local cache'
+    rsync \
+        -vh \
+        -rlptH \
+        --safe-links \
+        --delete-delay \
+        --delay-updates \
+        --exclude=/iso \
+        --exclude=/archive \
+        --exclude=/other \
+        --exclude=/sources \
+        --exclude=/images \
+        --exclude=/*-unstable \
+        --delete-excluded \
+        "$mirror" "$CACHE_DIR"/
+else
+    rsync \
+        -vh \
+        -rlptH \
+        --safe-links \
+        --delay-updates \
+        --exclude=/iso \
+        --exclude=/archive \
+        --exclude=/other \
+        --exclude=/sources \
+        --exclude=/images \
+        --exclude=/*-unstable \
+        "$mirror" "$CACHE_DIR"/
+fi
 
 # Skip syncing to upstream mirror for now
 exit 0
