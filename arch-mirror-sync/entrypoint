@@ -40,6 +40,9 @@ rsync \
     --delete-excluded \
     "$mirror" "$CACHE_DIR"/
 
+# Skip syncing to upstream mirror for now
+exit 0
+
 rclone "$rclone_cmd" \
     -v \
     --config="$RCLONE_CONFIG" \
