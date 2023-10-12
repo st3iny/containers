@@ -1,6 +1,7 @@
 name: Build and publish local-path-helper image
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '21 5 * * 0'
   push:
