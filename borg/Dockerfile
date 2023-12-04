@@ -1,6 +1,6 @@
 FROM debian:bullseye-slim
 
-ARG BORG_VERSION=1.2.6
+ARG BORG_VERSION=1.2.7
 
 # https://borgbackup.readthedocs.io/en/stable/installation.html#from-source
 RUN apt-get update \
