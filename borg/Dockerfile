@@ -1,4 +1,4 @@
-FROM debian:bookworm AS builder
+FROM debian:trixie AS builder
 
 ARG BORG_VERSION=1.4.1
 
@@ -19,7 +19,7 @@ RUN virtualenv --python=python3 /borg-venv \
     && pip install pkgconfig \
     && pip install borgbackup==${BORG_VERSION}
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 COPY --from=builder /borg-venv /borg-venv
 
@@ -30,10 +30,10 @@ RUN sed -Ei 's|deb.debian.org|ftp.de.debian.org|g' /etc/apt/sources.list.d/* \
         libssl3 \
         liblz4-1 libzstd1 libxxhash0 \
     && apt-get clean \
-    && adduser \
-        --disabled-password \
-        --disabled-login \
+    && useradd \
         --uid 2000 \
+        --user-group \
+        --create-home \
         borg
 
 USER borg:borg
