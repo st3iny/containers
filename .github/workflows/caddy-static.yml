@@ -6,6 +6,7 @@ on:
     - cron: '37 14 * * 0'
   push:
     paths:
+      - .github/workflows/caddy-static.yml
       - 'caddy-static/**/*'
 
 env:

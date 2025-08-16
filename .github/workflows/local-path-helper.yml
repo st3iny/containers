@@ -6,6 +6,7 @@ on:
     - cron: '21 5 * * 0'
   push:
     paths:
+      - .github/workflows/local-path-helper.yml
       - 'local-path-helper/**/*'
 
 env:
