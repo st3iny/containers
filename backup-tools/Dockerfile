@@ -56,4 +56,4 @@ RUN sed -Ei 's|deb.debian.org|ftp.de.debian.org|g' /etc/apt/sources.list.d/* \
 USER borg:borg
 WORKDIR /home/borg
 
-ENTRYPOINT ["/usr/bin/sh"]
+ENTRYPOINT ["/usr/bin/bash"]
