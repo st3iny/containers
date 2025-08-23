@@ -22,14 +22,16 @@ RUN virtualenv --python=python3 /borg-venv \
     && pip install pkgconfig \
     && pip install borgbackup==${BORG_VERSION}
 
-RUN apt-get install -y wget \
-    && wget -O /rclone.deb \
-        https://github.com/rclone/rclone/releases/download/v${RCLONE_VERSION}/rclone-v${RCLONE_VERSION}-linux-${TARGETARCH}.deb
+RUN apt-get install -y wget unzip \
+    && wget -O /rclone.zip \
+        https://github.com/rclone/rclone/releases/download/v${RCLONE_VERSION}/rclone-v${RCLONE_VERSION}-linux-${TARGETARCH}.zip \
+    && unzip -j /rclone.zip '*/rclone' \
+    && chmod +x /rclone
 
 FROM debian:trixie-slim
 
 COPY --from=builder /borg-venv /borg-venv
-COPY --from=builder /rclone.deb /rclone.deb
+COPY --from=builder /rclone /usr/local/bin/rclone
 
 RUN sed -Ei 's|deb.debian.org|ftp.de.debian.org|g' /etc/apt/sources.list.d/* \
     && apt-get update \
@@ -40,10 +42,6 @@ RUN sed -Ei 's|deb.debian.org|ftp.de.debian.org|g' /etc/apt/sources.list.d/* \
         libssl3 \
         liblz4-1 libzstd1 libxxhash0 \
     && ln -s /borg-venv/bin/borg /usr/local/bin/borg \
-    \
-    # Install rclone
-    && dpkg -i /rclone.deb \
-    && rm /rclone.deb \
     \
     # Clean up
     && apt-get clean \
