@@ -1,6 +1,6 @@
 FROM debian:trixie AS builder
 
-ARG BORG_VERSION=1.4.2
+ARG BORG_VERSION=1.4.3
 
 # Use german apt mirror
 RUN sed -Ei 's|deb.debian.org|ftp.de.debian.org|g' /etc/apt/sources.list.d/*
