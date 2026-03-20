@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Convenience script to test building a container locally.
+
+[ -z "$1" ] && echo "Usage: $(basename "$0") CONTEXT" && exit 1
+
+context="$1"
+shift
+
+[ ! -d "$context" ] && exit 1
+
+docker buildx build \
+    --load \
+    -t ghcr.io/st3iny/"$context":local \
+    -f "$context"/Dockerfile \
+    "$context" \
+    "$@"
