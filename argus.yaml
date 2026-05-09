@@ -10,6 +10,8 @@ jobs:
       - excludeGithubPrereleases: {}
       - excludeSemver:
           unstable: true
+      - trimPrefix:
+          prefix: v
     target:
       dockerfileBuildArg:
         file: ./backup-tools/Dockerfile
@@ -23,6 +25,8 @@ jobs:
       - excludeSemver:
           unstable: true
           greaterThanOrEqual: 2.0.0
+      - trimPrefix:
+          prefix: v
     target:
       dockerfileBuildArg:
         file: ./backup-tools/Dockerfile
