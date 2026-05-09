@@ -8,7 +8,7 @@ jobs:
         repo: rclone/rclone
     pipeline:
       - excludeGithubPrereleases: {}
-      - excludeSemverUnstable:
+      - excludeSemver:
           unstable: true
     target:
       dockerfileBuildArg:
