@@ -1,0 +1,65 @@
+name: Update dockerfile dependencies
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  backup-tools-borg:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Run argus
+      run: >-
+        docker run --rm
+        -v ./:/work
+        --env=GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+        --workdir=/work
+        ghcr.io/st3iny/argus:main
+        --job=backup-tools/borg
+
+    - name: Create PR
+      uses: peter-evans/create-pull-request@v8
+      with:
+        commit-message: "backup-tools: bump borg"
+        branch: backup-tools-borg
+        title: "backup-tools: bump borg"
+        body: ""
+        reviewers: st3iny
+        add-paths: backup-tools/Dockerfile
+
+  backup-tools-rclone:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Run argus
+      run: >-
+        docker run --rm
+        -v ./:/work
+        --env=GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+        --workdir=/work
+        ghcr.io/st3iny/argus:main
+        --job=backup-tools/rclone
+
+    - name: Create PR
+      uses: peter-evans/create-pull-request@v8
+      with:
+        commit-message: "backup-tools: bump rclone"
+        branch: backup-tools-rclone
+        title: "backup-tools: bump rclone"
+        body: ""
+        reviewers: st3iny
+        add-paths: backup-tools/Dockerfile
