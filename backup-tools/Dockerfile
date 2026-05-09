@@ -3,7 +3,7 @@ FROM debian:trixie AS builder
 ARG TARGETARCH
 
 ARG BORG_VERSION=1.4.4
-ARG RCLONE_VERSION=1.73.5
+ARG RCLONE_VERSION=v1.74.1
 
 # Use german apt mirror
 RUN sed -Ei 's|deb.debian.org|ftp.de.debian.org|g' /etc/apt/sources.list.d/*
