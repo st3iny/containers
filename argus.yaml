@@ -1,0 +1,29 @@
+log:
+  level: debug
+
+jobs:
+  - name: backup-tools/rclone
+    source:
+      githubReleases:
+        repo: rclone/rclone
+    pipeline:
+      - excludeGithubPrereleases: {}
+      - excludeSemverUnstable:
+          unstable: true
+    target:
+      dockerfileBuildArg:
+        file: ./backup-tools/Dockerfile
+        arg: RCLONE_VERSION
+  - name: backup-tools/borg
+    source:
+      githubReleases:
+        repo: borgbackup/borg
+    pipeline:
+      - excludeGithubPrereleases: {}
+      - excludeSemver:
+          unstable: true
+          greaterThanOrEqual: 2.0.0
+    target:
+      dockerfileBuildArg:
+        file: ./backup-tools/Dockerfile
+        arg: BORG_VERSION
