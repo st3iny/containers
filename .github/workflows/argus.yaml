@@ -25,12 +25,18 @@ jobs:
         ghcr.io/st3iny/argus:main
         --job=backup-tools/borg
 
+    - name: Extract argus log
+      id: job-log
+      run: |
+        echo "FROM=$(jq -r '."backup-tools/borg".from')" >> "$GITHUB_OUTPUT"
+        echo "TO=$(jq -r '."backup-tools/borg".to')" >> "$GITHUB_OUTPUT"
+
     - name: Create PR
       uses: peter-evans/create-pull-request@v8
       with:
-        commit-message: "backup-tools: bump borg"
+        commit-message: "backup-tools: bump borg from ${{ steps.job-log.outputs.FROM }} to ${{ steps.job-log.outputs.TO }}"
         branch: backup-tools-borg
-        title: "backup-tools: bump borg"
+        title: "backup-tools: bump borg from ${{ steps.job-log.outputs.FROM }} to ${{ steps.job-log.outputs.TO }}"
         body: ""
         reviewers: st3iny
         add-paths: backup-tools/Dockerfile
@@ -54,12 +60,18 @@ jobs:
         ghcr.io/st3iny/argus:main
         --job=backup-tools/rclone
 
+    - name: Extract argus log
+      id: job-log
+      run: |
+        echo "FROM=$(jq -r '."backup-tools/rclone".from')" >> "$GITHUB_OUTPUT"
+        echo "TO=$(jq -r '."backup-tools/rclone".to')" >> "$GITHUB_OUTPUT"
+
     - name: Create PR
       uses: peter-evans/create-pull-request@v8
       with:
-        commit-message: "backup-tools: bump rclone"
+        commit-message: "backup-tools: bump rclone from ${{ steps.job-log.outputs.FROM }} to ${{ steps.job-log.outputs.TO }}"
         branch: backup-tools-rclone
-        title: "backup-tools: bump rclone"
+        title: "backup-tools: bump rclone from ${{ steps.job-log.outputs.FROM }} to ${{ steps.job-log.outputs.TO }}"
         body: ""
         reviewers: st3iny
         add-paths: backup-tools/Dockerfile
