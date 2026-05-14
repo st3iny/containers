@@ -24,12 +24,13 @@ jobs:
         --workdir=/work
         ghcr.io/st3iny/argus:main
         --job=backup-tools/borg
+        --job-log=argus-job-log.json
 
     - name: Extract argus log
       id: job-log
       run: |
-        echo "FROM=$(jq -r '."backup-tools/borg".from')" >> "$GITHUB_OUTPUT"
-        echo "TO=$(jq -r '."backup-tools/borg".to')" >> "$GITHUB_OUTPUT"
+        echo "FROM=$(jq -r '."backup-tools/borg".from' argus-job-log.json)" >> "$GITHUB_OUTPUT"
+        echo "TO=$(jq -r '."backup-tools/borg".to' argus-job-log.json)" >> "$GITHUB_OUTPUT"
 
     - name: Create PR
       uses: peter-evans/create-pull-request@v8
@@ -59,12 +60,13 @@ jobs:
         --workdir=/work
         ghcr.io/st3iny/argus:main
         --job=backup-tools/rclone
+        --job-log=argus-job-log.json
 
     - name: Extract argus log
       id: job-log
       run: |
-        echo "FROM=$(jq -r '."backup-tools/rclone".from')" >> "$GITHUB_OUTPUT"
-        echo "TO=$(jq -r '."backup-tools/rclone".to')" >> "$GITHUB_OUTPUT"
+        echo "FROM=$(jq -r '."backup-tools/rclone".from' argus-job-log.json)" >> "$GITHUB_OUTPUT"
+        echo "TO=$(jq -r '."backup-tools/rclone".to' argus-job-log.json)" >> "$GITHUB_OUTPUT"
 
     - name: Create PR
       uses: peter-evans/create-pull-request@v8
