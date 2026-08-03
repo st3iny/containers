@@ -2,7 +2,7 @@ FROM debian:trixie AS builder
 
 ARG TARGETARCH
 
-ARG BORG_VERSION=1.4.4
+ARG BORG_VERSION=1.4.5
 ARG RCLONE_VERSION=1.75.0
 
 # Use german apt mirror
